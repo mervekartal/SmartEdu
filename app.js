@@ -1,4 +1,5 @@
 const express = require('express')
+const ejs = require('ejs')
 
 const app = express()
 
@@ -10,10 +11,19 @@ app.use(express.static("public"))
 
 //routes
 app.get('/', (req,res) => {
-    res.status(200).render('index')
+    res.status(200).render('index',{
+        page_name: "index"
+    })
 })
 app.get('/about', (req,res) => {
-    res.status(200).render('about')
+    res.status(200).render('about',{
+        page_name: "about"
+    })
+})
+app.get('/courses', (req,res) => {
+    res.status(200).render('courses',{
+        page_name: "courses"
+    })
 })
 const port = 3000
 app.listen(port, () => {
