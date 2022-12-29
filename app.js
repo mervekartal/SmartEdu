@@ -1,10 +1,19 @@
 const express = require('express')
-const { render } = require('express/lib/response')
 
 const app = express()
 
+//template engine
+app.set("view engine","ejs")
+
+//middlewares
+app.use(express.static("public"))
+
+//routes
 app.get('/', (req,res) => {
-    res.status(200).send('index sayfasi')
+    res.status(200).render('index')
+})
+app.get('/about', (req,res) => {
+    res.status(200).render('about')
 })
 const port = 3000
 app.listen(port, () => {
