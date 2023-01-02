@@ -9,6 +9,7 @@ exports.createCourse = async (req,res) => {
             status: 'success',
             course: course
         })
+        //res.send('Yeni kurs oluşturuldu')
     }catch{
         res.status(400).json({
             status: 'fail',
