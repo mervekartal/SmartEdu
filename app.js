@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 
 const pageRoute = require('./routes/pageRoute')
 const courseRoute = require('./routes/courseRoute')
+const categoryRoute = require('./routes/categoryRoute')
 
 const app = express()
 
@@ -13,7 +14,7 @@ const app = express()
 mongoose.set('strictQuery', false)
 
 mongoose.connect('mongodb://localhost/smartedu-db').then(() => {
-    console.log('DB Connected')
+    console.log('DB Connection Successful')
 }).catch((err) => {
     console.log(err)
 })
@@ -34,6 +35,7 @@ app.use(express.urlencoded({extended: true}))
 //routes
 app.use('/', pageRoute) //aynı kullanım -> app.get('/', pageRoute) 
 app.use('/courses', courseRoute)
+app.use('/categories', categoryRoute)
 
 const port = 3000
 app.listen(port, () => {
