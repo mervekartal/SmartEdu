@@ -28,8 +28,8 @@ exports.loginUser = async (req,res) => {
 
         if(same){ 
             res.status(200).send('Login successful') //ilgili sayfa olmadığı için bilgi mesajı gönderildi
-        } else{ 
-            res.send('Geçersiz')
+        }else{ 
+            res.send('Invalid')
         }        
 
     }catch(error){
