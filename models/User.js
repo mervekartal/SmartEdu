@@ -24,7 +24,7 @@ const UserSchema = new Schema({
 })
 
 UserSchema.pre('save', function(next){
-    const user = this.user
+    const user = this
     //10 -> salt param
     bcrypt.hash(user.password, 10, (error, hash) => {
         user.password = hash

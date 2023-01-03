@@ -38,10 +38,10 @@ exports.getAllCourses = async (req,res) => {
             categories,
             page_name: "courses"
         })
-    }catch(err){
+    }catch(error){
          res.status(400).json({
          status: 'fail',
-         err
+         error
 
         })
     }
@@ -52,7 +52,7 @@ exports.getAllCourses = async (req,res) => {
     //         status: 'success',
     //         courses: courses
     //     })
-    // }catch(err){
+    // }catch(error){
     //     res.status(400).json({
     //         status: 'fail',
     //         error

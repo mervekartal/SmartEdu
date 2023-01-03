@@ -9,10 +9,10 @@ exports.createCategory = async (req,res) => {
             status: 'success',
             category: category
         })
-    }catch(err){
+    }catch(error){
         res.status(400).json({
             status: 'fail',
-            err
+            error
         })
     }
 }
