@@ -27,7 +27,10 @@ exports.loginUser = async (req,res) => {
         let same = await bcrypt.compare(password, user.password)
 
         if(same){ 
-            res.status(200).send('Login successful') //ilgili sayfa olmadığı için bilgi mesajı gönderildi
+            //session
+            req.session.userID = user._id
+            res.status(200).redirect('/')
+            //res.status(200).send('Login successful') //ilgili sayfa olmadığı için bilgi mesajı gönderildi
         }else{ 
             res.send('Invalid')
         }        
