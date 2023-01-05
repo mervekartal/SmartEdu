@@ -6,10 +6,7 @@ exports.createCourse = async (req,res) => {
     //template hazır olmadığı için json formatında gönderildi.
     try{
     const course = await Course.create(req.body)
-        res.status(201).json({
-            status: 'success',
-            course: course
-        })
+        res.status(201).redirect('/courses')
         //res.send('Yeni kurs oluşturuldu')
     }catch(err){
         res.status(400).json({
@@ -30,7 +27,7 @@ exports.getAllCourses = async (req,res) => {
         filter = {category: category._id}
     }
 
-    const courses = await Course.find(filter)
+    const courses = await Course.find(filter).sort('-createdAt')
     const categories = await Category.find()
 
         res.status(200).render('courses', {
