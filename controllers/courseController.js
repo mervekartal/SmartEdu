@@ -80,3 +80,18 @@ exports.getCourse = async (req,res) => {
         })
     }
 }
+exports.enrollCourse = async (req,res) => {
+
+    try{
+    const user = await User.findById(req.session.userID)
+    await user.courses.push({_id: req.body.course_id}) //formdan gelen kurs id'sine sahip kursu kullanıcıya ekle
+    await user.save()
+        res.status(200).redirect('/users/dashboard')
+    }catch(err){
+         res.status(400).json({
+         status: 'fail',
+         err
+
+        })
+    }
+}
