@@ -25,7 +25,7 @@ const CourseSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category' //Category modeli referans olarak verildi, onun id'si kaydedilecek.
     },
-    user: {
+    user: { //oluşturan 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }

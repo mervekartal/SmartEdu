@@ -28,14 +28,30 @@ exports.getAllCourses = async (req,res) => {
     const categorySlug = req.query.categories
     const category = await Category.findOne({slug:categorySlug})
 
+    const query = req.query.search //search -> search button name
+
     let filter = {}
     if(categorySlug){
         filter = {category: category._id}
     }
 
-    const courses = await Course.find(filter).sort('-createdAt')
-    const categories = await Category.find()
+    if(query){
+        filter = {name: query}
+    }
 
+    if(!query && !categorySlug){
+        filter.name = "",
+        filter.category = null
+    }
+
+    const courses = await Course.find({
+        $or:[
+            {name: { $regex: '.*' + filter.name + '.*', $options: 'i'}},
+            {category: filter.category}
+        ]
+    }).sort('-createdAt').populate('user')
+
+    const categories = await Category.find()
         res.status(200).render('courses', {
             courses,
             categories,
