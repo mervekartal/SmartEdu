@@ -38,6 +38,7 @@ exports.getContactPage = (req,res) => {
 }
 
 exports.sendEmail = async (req,res) => {
+    try{
     const outputMessage = `
     <h3>Mail Details</h3>
     <ul>
@@ -56,8 +57,8 @@ exports.sendEmail = async (req,res) => {
           user: "camden28@ethereal.email", // generated ethereal user
           pass: "password", // generated ethereal password
         },
-      });
-    
+      })
+
       // send mail with defined transport object
       let info = await transporter.sendMail({
         from: '"SmartEdu Contact Form" <camden28@ethereal.email>', // sender address
@@ -72,5 +73,14 @@ exports.sendEmail = async (req,res) => {
       // Preview only available when sending through an Ethereal account
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
 
+      req.flash("success","We received your message successfully") //2 params
+
       res.status(200).redirect('/contact')
+
+    }catch(err){
+        // req.flash("error",`Something happend! ${err}`)
+        req.flash("error","Something happend!")
+        res.status(502).redirect('/contact')
+
+    }
 }

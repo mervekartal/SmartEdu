@@ -3,6 +3,7 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
+const flash = require('connect-flash')
 
 const pageRoute = require('./routes/pageRoute')
 const courseRoute = require('./routes/courseRoute')
@@ -43,7 +44,13 @@ app.use(session({
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb://localhost/smartedu-db' })
   }))
+app.use(flash())
 
+//flash'taki mesajları flashMessages değişkenine atamak için bir middleware yaratıldı
+app.use((req, res, next) => {
+    res.locals.flashMessages = req.flash()
+    next()
+})
   
 //routes
 
