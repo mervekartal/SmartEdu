@@ -4,16 +4,23 @@ const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const Category = require('../models/Category')
 const Course = require('../models/Course')
+const { validationResult } = require('express-validator')
 
 exports.createUser = async (req,res) => {
     try{
         const user = await User.create(req.body)
         res.status(201).redirect('/login')
     }catch(error){
-        res.status(400).json({
-            status: 'fail',
-            error
-        })
+        // res.status(400).json({
+        //     status: 'fail',
+        //     error
+        // })
+        const errors = validationResult(req)
+        console.log(errors)
+        console.log(errors.array()[0].msg)
+        req.flash("error",`${errors.array()[0].msg}`) //flash message for register
+        res.status(400).redirect('/register')
+
     }
 }
 
