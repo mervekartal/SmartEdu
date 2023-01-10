@@ -32,14 +32,29 @@ const UserSchema = new Schema({
     }]
 })
 
+// UserSchema.pre('save', function(next){
+//     const user = this
+//     //10 -> salt param
+//     bcrypt.hash(user.password, 10, (error, hash) => {
+//         user.password = hash
+//         next()
+//     })
+
+// })
+
+//user nesnesindeki değerlerde değişiklik olduğunda mongoose password'ü modifiye ettiği için password şifreleme alanında kod değişikliği yapıldı
 UserSchema.pre('save', function(next){
     const user = this
-    //10 -> salt param
-    bcrypt.hash(user.password, 10, (error, hash) => {
-        user.password = hash
-        next()
-    })
+    if(!user.isModified('password')) return next() //kullanıcı pwd modifiye edilmediyse next yap
 
+    bcrypt.genSalt(10, function(err, salt){
+        if(err) return next(err)
+        bcrypt.hash(user.password, salt, function(err, hash){
+            if(err) return next(err)
+            user.password = hash
+            next()
+        })
+    })
 })
 
 const User = mongoose.model('User',UserSchema)
