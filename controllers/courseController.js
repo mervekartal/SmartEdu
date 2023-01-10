@@ -130,3 +130,21 @@ exports.releaseCourse = async (req,res) => {
         })
     }
 }
+
+exports.deleteCourse = async (req,res) => {
+
+    try{
+        const course = await Course.findOneAndRemove({slug: req.params.slug})
+        req.flash("success",`${course.name} has been deleted successfully`) //flash message for delete course
+
+        res.status(200).redirect('/users/dashboard')
+    }catch(err){
+         res.status(400).json({
+         status: 'fail',
+         err
+        })
+    }
+}
+
+
+
