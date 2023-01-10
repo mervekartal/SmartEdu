@@ -18,37 +18,42 @@ exports.createUser = async (req,res) => {
         const errors = validationResult(req)
         console.log(errors)
         console.log(errors.array()[0].msg)
-        req.flash("error",`${errors.array()[0].msg}`) //flash message for register
+        for(let i = 0; i < errors.array().length; i++){
+            req.flash("error",`${errors.array()[i].msg}`) //flash messages for register  
+        }
         res.status(400).redirect('/register')
 
     }
 }
 
-exports.loginUser = async (req,res) => {
-    try{
-
-        const { email, password } = req.body
-
-        let user = await User.findOne({ email })
-
-        let same = await bcrypt.compare(password, user.password)
-
-        if(same){ 
-            //session
-            req.session.userID = user._id
-            res.status(200).redirect('/users/dashboard')
-            //res.status(200).send('Login successful') //ilgili sayfa olmadığı için bilgi mesajı gönderildi
-        }else{ 
-            res.send('Invalid')
-        }        
-
-    }catch(error){
-        res.status(400).json({
-            status: 'fail',
-            error
-        })
+exports.loginUser = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      //mongoose 6
+      const user = await User.findOne({ email });
+      if (user) {
+        bcrypt.compare(password, user.password, (err, same) => {
+          if (same) {
+            // USER SESSION
+            req.session.userID = user._id;
+            res.status(200).redirect('/users/dashboard');
+          } else {
+            req.flash('error', 'Your email or password is  incorrect!');
+            res.status(400).redirect('/login');
+          }
+        });
+      } else {
+        req.flash('error', 'User is not exist!');
+        res.status(400).redirect('/login');
+      }
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        error,
+      });
     }
-}
+  }
 
 exports.logoutUser = (req, res) => {
     req.session.destroy(() => {
