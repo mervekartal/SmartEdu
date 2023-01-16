@@ -81,6 +81,8 @@ exports.deleteUser = async (req,res) => {
   try{
       await User.findByIdAndRemove(req.params.id)
 
+      await Course.deleteMany({user: req.params.id}) //teacher rolündeki kullanıcı silindiğinde, o kullanıcıya ait kurları da sil
+
       res.status(200).redirect('/users/dashboard')
   }catch(err){
        res.status(400).json({
