@@ -10,5 +10,6 @@ router.route('/:slug').get(courseController.getCourse) //kursa ait profil sayfas
 router.route('/enroll').post(courseController.enrollCourse) //kursa kayıt
 router.route('/release').post(courseController.releaseCourse) //kurstan ayrılma
 router.route('/:slug').delete(courseController.deleteCourse) //kurs silme
+router.route('/:slug').put(courseController.updateCourse) //kurs güncelleme
 
 module.exports = router
