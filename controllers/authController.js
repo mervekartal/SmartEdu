@@ -66,10 +66,26 @@ exports.getDashboardPage = async (req,res) => {
     const user = await (await User.findOne({_id: req.session.userID})).populate('courses')
     const categories = await Category.find()
     const courses = await Course.find({user: req.session.userID})
+    const users = await User.find()
     res.status(200).render('dashboard',{
         page_name: "dashboard",
         user,
         categories,
-        courses
+        courses,
+        users
     })
+}
+
+exports.deleteUser = async (req,res) => {
+
+  try{
+      await User.findByIdAndRemove(req.params.id)
+
+      res.status(200).redirect('/users/dashboard')
+  }catch(err){
+       res.status(400).json({
+       status: 'fail',
+       err
+      })
+  }
 }
